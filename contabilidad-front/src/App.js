@@ -1,5 +1,6 @@
 import Home from "./components/Home";
 import NavBar from "./components/NavBar";
+import Login from "./components/Login";
 import Movements from "./components/Movements";
 import NewMovement from "./components/NewMovement";
 import RegisterForm from "./components/RegisterForm";
@@ -22,6 +23,9 @@ const App = () => (
       </Route>
       <Route path="/register">
         <RegisterForm />
+      </Route>
+      <Route path="/login">
+        <Login />
       </Route>
 
     </Switch>

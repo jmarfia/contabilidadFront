@@ -1,0 +1,114 @@
+import React, { useState } from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import "./styles.css";
+
+
+
+const NewMovement = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [loginStatus, setLoginStatus] = useState("");
+    let history = useHistory();
+    const dispatch = useDispatch();
+
+
+    const login = () => {
+        function getUserInfo() {
+            let user = {};
+            user.username = username;
+            user.password = password;
+            return user;
+        }
+        let User = getUserInfo();
+        console.log("hola",User)
+        let options = {
+            method: "post",
+            url: `http://localhost:3001/api/login`,
+            crossdomain: true,
+            data: User,
+        };
+        //mandar el post de login y redirect a /movements
+        axios(options).then((response) => {
+
+            setLoginStatus(response.data.username);
+
+        });
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        function getUserInfo() {
+            let user = {};
+            user.username = document.getElementById("username").value;
+            user.password = document.getElementById("password").value;
+            return user;
+        }
+        let User = getUserInfo();
+
+        let options = {
+            method: "post",
+            url: `http://localhost:3001/api/login`,
+            crossdomain: true,
+            data: User,
+        };
+        //mandar el post de crear y redirect a /
+        axios(options).then((response) => {
+            console.log(response);
+            history.push("/movements");
+
+        });
+    };
+    return (
+        <div className="wrapper fadeInDown">
+            <div id="formContent">
+                <div className="fadeIn first">
+                    <h2 className="pt-3"> Login</h2>
+                </div>
+                <div>
+                    <form>
+                        <div className="row mt-3">
+                            <div className="col-xs-6 col-sm-6 col-md-6">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        name="username"
+                                        id="username"
+                                        className="form-control"
+                                        placeholder="Username"
+                                        onChange={(e) => {
+                                            setUsername(e.target.value)
+                                        }}
+                                    ></input>
+                                </div>
+                            </div>
+                            <div className="col-xs-6 col-sm-6 col-md-6">
+                                <div className="form-group">
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        id="password"
+                                        className="form-control"
+                                        placeholder="Password"
+                                        onChange={(e) => {
+                                            setPassword(e.target.value)
+                                        }}
+                                    ></input>
+                                </div>
+                            </div>
+                        </div>
+                        <input
+                            type="button"
+                            value="Login"
+                            className="btn btn-outline-success "
+                            onClick={login}
+                        ></input>
+                    </form>
+                </div>
+            </div>
+            <h1>hola {loginStatus}</h1>
+        </div>
+    );
+};
+export default NewMovement;

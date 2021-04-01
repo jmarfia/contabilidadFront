@@ -25,11 +25,18 @@ const Home = () => {
      </button>
             </Link>
             {logged ? <button type="button"> Ya tas logueado papu </button>
-        : <Link to="/register">
-                <button type="button">
-                    Registrarse
+                : <Link to="/register">
+                    <button type="button">
+                        Registrarse
      </button>
-            </Link>}</div>
+                </Link>}
+                <Link to="/login">
+                <button type="button">
+                    Login
+     </button>
+            </Link>
+
+                </div>
 
     );
 };
