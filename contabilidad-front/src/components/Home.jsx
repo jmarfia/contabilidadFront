@@ -4,7 +4,7 @@ import {isLogged} from "../store/actions"
 
 
 const Home = () => {
-    const logged = useSelector(state => state.loggedReducer)
+    const logged = useSelector(state => state.isLogged)
     const dispatch = useDispatch();
     return (
 

@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import {actionLogout} from "../store/actions"
+
 
 const Home = () => {
-    const logged = useSelector(state => state.loggedReducer)
+    const logged = useSelector(state => state.isLogged)
+    const dispatch = useDispatch();
+    function logout(){
+        localStorage.removeItem("token")
+        dispatch(actionLogout())
+    }
 
     return (
 
@@ -35,7 +42,9 @@ const Home = () => {
                     Login
      </button>
             </Link>
-
+            <button type="button" onClick={logout}>
+                    Logout
+     </button>
                 </div>
 
     );

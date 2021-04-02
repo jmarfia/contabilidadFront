@@ -1,6 +1,8 @@
 export const isLogged = user => {
     return {
         type: "SIGN_IN",
-        payload: user
     }
 }
+export const actionLogout = () => ({
+    type: "SIGN_OUT",
+  });

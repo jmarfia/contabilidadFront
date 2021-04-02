@@ -3,13 +3,15 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./styles.css";
+import {isLogged} from "../store/actions"
+
 
 
 
 const NewMovement = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [loginStatus, setLoginStatus] = useState("");
+    const [loginStatus, setLoginStatus] = useState(false);
     let history = useHistory();
     const dispatch = useDispatch();
 
@@ -22,7 +24,6 @@ const NewMovement = () => {
             return user;
         }
         let User = getUserInfo();
-        console.log("hola",User)
         let options = {
             method: "post",
             url: `http://localhost:3001/api/login`,
@@ -31,35 +32,49 @@ const NewMovement = () => {
         };
         //mandar el post de login y redirect a /movements
         axios(options).then((response) => {
-
-            setLoginStatus(response.data.username);
-
+            if (!response.data.auth) {
+                setLoginStatus(false)
+            } else {
+                console.log("hola response", response.data)
+                localStorage.setItem("token", response.data.token)
+                dispatch(isLogged())
+                setLoginStatus(true);
+            }
         });
     }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        function getUserInfo() {
-            let user = {};
-            user.username = document.getElementById("username").value;
-            user.password = document.getElementById("password").value;
-            return user;
-        }
-        let User = getUserInfo();
-
-        let options = {
-            method: "post",
-            url: `http://localhost:3001/api/login`,
-            crossdomain: true,
-            data: User,
-        };
-        //mandar el post de crear y redirect a /
-        axios(options).then((response) => {
+    const userAuth = () => {
+        axios.get("http://localhost:3001/api/isAuth",{
+            headers: {
+                "x-access-token": localStorage.getItem("token"),
+            },
+        }).then((response) => {
             console.log(response);
-            history.push("/movements");
+        })
+    }
 
-        });
-    };
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     function getUserInfo() {
+    //         let user = {};
+    //         user.username = document.getElementById("username").value;
+    //         user.password = document.getElementById("password").value;
+    //         return user;
+    //     }
+    //     let User = getUserInfo();
+
+    //     let options = {
+    //         method: "post",
+    //         url: `http://localhost:3001/api/login`,
+    //         crossdomain: true,
+    //         data: User,
+    //     };
+    //     //mandar el post de crear y redirect a /
+    //     axios(options).then((response) => {
+    //         console.log(response);
+    //         //history.push("/movements");
+
+    //     });
+    // };
     return (
         <div className="wrapper fadeInDown">
             <div id="formContent">
@@ -107,7 +122,7 @@ const NewMovement = () => {
                     </form>
                 </div>
             </div>
-            <h1>hola {loginStatus}</h1>
+            <h1>hola {loginStatus && <button onClick={userAuth}> Check if auth </button>}</h1>
         </div>
     );
 };

@@ -1,10 +1,19 @@
-const loggedReducer = (state = null, action) => {
-    switch(action.type){
+const isLogged = (state = null, action) => {
+    switch (action.type) {
         case "SIGN_IN":
-            return action.payload;
+            let token = localStorage.getItem("token");
+            if (token == null) {
+                console.log("TAS LAK", token)
+                return false;
+            } else {
+                console.log("TAS LAK else", token)
+                return true
+            }
+        case "SIGN_OUT":
+            return false
         default:
             return state;
     }
 }
 
-export default loggedReducer;
+export default isLogged;
