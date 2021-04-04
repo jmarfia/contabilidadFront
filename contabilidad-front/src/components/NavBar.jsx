@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import {actionLogout} from "../store/actions"
+import { actionLogout } from "../store/actions"
 
 
 const Home = () => {
     const logged = useSelector(state => state.isLogged)
     const dispatch = useDispatch();
-    function logout(){
+    function logout() {
         localStorage.removeItem("token")
         dispatch(actionLogout())
     }
@@ -31,21 +31,19 @@ const Home = () => {
                     Crear nuevo movimiento
      </button>
             </Link>
-            {logged ? <button type="button"> Ya tas logueado papu </button>
-                : <Link to="/register">
-                    <button type="button">
-                        Registrarse
-     </button>
-                </Link>}
-                <Link to="/login">
-                <button type="button">
-                    Login
-     </button>
-            </Link>
-            <button type="button" onClick={logout}>
-                    Logout
-     </button>
-                </div>
+            {logged ? (<button type="button" onClick={logout}>Logout</button>)
+                : (<><Link to="/register">
+                    <button type="button">Registrarse</button>
+                </Link>
+                    <Link to="/login">
+                        <button type="button">
+                            Login
+ </button>
+                    </Link></>
+                )}
+
+
+        </div>
 
     );
 };
