@@ -34,11 +34,8 @@ const Movements = () => {
         axios(options).then((response) => {
             if (response.data != "error") {
                 getMovements();
-            } else { console.log("ENTORAL ELES",response.data) }
+            } else { console.log("ENTORAL ELES", response.data) }
         });
-
-
-
     };
 
     let mySyle = {
@@ -72,7 +69,7 @@ const Movements = () => {
                                     position: 'absolute',
                                     right: 5,
                                     top: 5,
-                              }}
+                                }}
                                 className={classes.button}
                                 startIcon={<DeleteIcon />}
                             >

@@ -20,25 +20,37 @@ const Home = () => {
                     Home
      </button>
             </Link>
-            <Link to="/Movements">
-                <button type="button">
-                    Ver todos los movimientos
-     </button>
-            </Link>
-            <Link to="/NewMovement">
-                <button type="button">
-                    Crear nuevo movimiento
-     </button>
-            </Link>
-            {logged ? (<button type="button" onClick={logout}>Logout</button>)
-                : (<><Link to="/register">
-                    <button type="button">Registrarse</button>
-                </Link>
-                    <Link to="/login">
+
+            {logged ? (
+                <>
+
+                    <Link to="/Movements">
                         <button type="button">
-                            Login
+                            Ver todos los movimientos
+             </button>
+                    </Link>
+                    <Link to="/NewMovement">
+                        <button type="button">
+                            Crear nuevo movimiento
+             </button>
+                    </Link>
+                    <button type="button" onClick={logout}>Logout</button>
+                </>
+
+            )
+                : (
+                    <>
+
+
+                        <Link to="/register">
+                            <button type="button">Registrarse</button>
+                        </Link>
+                        <Link to="/login">
+                            <button type="button">
+                                Login
  </button>
-                    </Link></>
+                        </Link>
+                    </>
                 )}
 
 

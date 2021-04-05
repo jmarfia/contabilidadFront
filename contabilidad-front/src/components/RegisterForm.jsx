@@ -13,7 +13,7 @@ const RegisterForm = (props) => {
       let user = {};
       user.firstName = document.getElementById("first_name").value;
       user.lastName = document.getElementById("last_name").value;
-      user.email = document.getElementById("email").value;
+      user.username = document.getElementById("username").value;
       user.address = document.getElementById("address").value;
       user.phone = document.getElementById("phone").value;
       user.password = document.getElementById("password").value;
@@ -25,7 +25,7 @@ const RegisterForm = (props) => {
 
     let options3 = {
       method: "post",
-      url: `http://localhost:3001/api/registro`,
+      url: `http://localhost:3001/api/register`,
       crossdomain: true,
       data: User,
     };
@@ -74,11 +74,11 @@ const RegisterForm = (props) => {
 
             <div className="form-group">
               <input
-                type="email"
-                name="email"
-                id="email"
+                type="text"
+                name="username"
+                id="username"
                 className="form-control input-sm w-75 ml-5"
-                placeholder="Email Address"
+                placeholder="username"
               ></input>
             </div>
             <div className="form-group">
