@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import "./styles.css";
 import {isLogged} from "../store/actions"
-
-
-
 
 const NewMovement = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loginStatus, setLoginStatus] = useState(false);
     const dispatch = useDispatch();
+    let history = useHistory();
+
 
 
     const login = () => {
@@ -22,57 +22,30 @@ const NewMovement = () => {
             return user;
         }
         let User = getUserInfo();
-        let options = {
-            method: "post",
-            url: `http://localhost:3001/api/login`,
-            crossdomain: true,
-            data: User,
-        };
-        //mandar el post de login y redirect a /movements
-        axios(options).then((response) => {
-            if (!response.data.auth) {
-                setLoginStatus(false)
-            } else {
-                console.log("hola response", response.data)
+
+        async function sendCredentials(credentials){
+            let options = {
+                method: "post",
+                url: `http://localhost:3001/api/login`,
+                crossdomain: true,
+                data: User,
+            };
+            try{
+                const response = await axios(options)
                 localStorage.setItem("token", response.data.token)
-                dispatch(isLogged())
+                localStorage.setItem("username", response.data.username)
+                dispatch(isLogged());
                 setLoginStatus(true);
+                console.log(response, "RESPONSE BIEN LOGUEADO");
+                history.push("/");
+            }catch(err){
+                setLoginStatus(false)
+                console.log(err, "ERROR DE LOGIN");
             }
-        });
-    }
-    const userAuth = () => {
-        axios.get("http://localhost:3001/api/isAuth",{
-            headers: {
-                "x-access-token": localStorage.getItem("token"),
-            },
-        }).then((response) => {
-            console.log(response);
-        })
+        }
+        sendCredentials(User);
     }
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     function getUserInfo() {
-    //         let user = {};
-    //         user.username = document.getElementById("username").value;
-    //         user.password = document.getElementById("password").value;
-    //         return user;
-    //     }
-    //     let User = getUserInfo();
-
-    //     let options = {
-    //         method: "post",
-    //         url: `http://localhost:3001/api/login`,
-    //         crossdomain: true,
-    //         data: User,
-    //     };
-    //     //mandar el post de crear y redirect a /
-    //     axios(options).then((response) => {
-    //         console.log(response);
-    //         //history.push("/movements");
-
-    //     });
-    // };
     return (
         <div className="wrapper fadeInDown">
             <div id="formContent">
@@ -120,7 +93,6 @@ const NewMovement = () => {
                     </form>
                 </div>
             </div>
-            <h1>hola {loginStatus && <button onClick={userAuth}> Check if auth </button>}</h1>
         </div>
     );
 };

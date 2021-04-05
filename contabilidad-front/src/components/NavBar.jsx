@@ -2,14 +2,19 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { actionLogout } from "../store/actions"
+import { useHistory } from "react-router-dom";
+
 
 
 const Home = () => {
     const logged = useSelector(state => state.isLogged)
     const dispatch = useDispatch();
+    let history = useHistory();
+
     function logout() {
         localStorage.removeItem("token")
         dispatch(actionLogout())
+        history.push("/");
     }
 
     return (

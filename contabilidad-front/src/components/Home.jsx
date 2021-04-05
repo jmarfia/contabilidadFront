@@ -5,13 +5,12 @@ import {isLogged} from "../store/actions"
 
 const Home = () => {
     const logged = useSelector(state => state.isLogged)
+    let username = localStorage.getItem("username");
     const dispatch = useDispatch();
     return (
 
         <div>
-            <h3>BIENVENIDO {logged}</h3>
-            <button onClick={() => dispatch(isLogged())}>LOGIN HD</button>
-            {logged ? <div> tas logueado papu </div> : <div> NO tas logueado papu </div>}
+            <h3>BIENVENIDO {username}</h3>
         </div>
 
     );
