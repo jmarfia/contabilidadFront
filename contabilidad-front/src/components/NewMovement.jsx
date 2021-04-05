@@ -35,7 +35,7 @@ const NewMovement = () => {
     return (
         <div className="wrapper fadeInDown">
             <div id="formContent">
-                <div class="fadeIn first">
+                <div className="fadeIn first">
                     <h2 className="pt-3"> Registro</h2>
                 </div>
                 <div>

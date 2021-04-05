@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import "./styles.css";
 import {isLogged} from "../store/actions"
 
@@ -12,7 +11,6 @@ const NewMovement = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loginStatus, setLoginStatus] = useState(false);
-    let history = useHistory();
     const dispatch = useDispatch();
 
 

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { actionLogout } from "../store/actions"
 
