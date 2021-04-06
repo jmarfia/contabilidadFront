@@ -1,4 +1,4 @@
-import Home from "./components/Home";
+import HomePage from "./components/Home";
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
 import Movements from "./components/Movements";
@@ -13,7 +13,7 @@ const App = () => (
     <NavBar />
     <Switch>
       <Route exact path="/">
-        <Home />
+        <HomePage />
       </Route>
       <Route exact path="/movements">
         <Movements />

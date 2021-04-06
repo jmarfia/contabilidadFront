@@ -1,67 +1,123 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { actionLogout } from "../store/actions"
+import { actionLogout } from "../store/actions";
 import { useHistory } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  makeStyles,
+  Container,
+} from "@material-ui/core";
+import { Home } from "@material-ui/icons";
 
+const useStyles = makeStyles({
+  navbarDisplayFlex: {
+    display: `flex`,
+    justifyContent: `space-between`,
+  },
+  navDisplayFlex: {
+    display: `flex`,
+    justifyContent: `space-between`,
+  },
+  linkText: {
+    textDecoration: `none`,
+    textTransform: `uppercase`,
+    color: `white`,
+  },
+});
 
+const NavBar = () => {
+  const classes = useStyles();
+  const logged = useSelector((state) => state.isLogged);
+  const dispatch = useDispatch();
+  let history = useHistory();
 
-const Home = () => {
-    const logged = useSelector(state => state.isLogged)
-    const dispatch = useDispatch();
-    let history = useHistory();
-
-    function logout() {
-        localStorage.removeItem("token")
-        dispatch(actionLogout())
-        history.push("/");
+  async function logout() {
+    try {
+      localStorage.removeItem("username");
+      localStorage.removeItem("token");
+      dispatch(actionLogout());
+      history.push("/");
+    } catch (err) {
+      console.log(err);
     }
+  }
 
-    return (
+  return (
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <Container className={classes.navbarDisplayFlex}>
+            <IconButton edge="start" color="inherit" aria-label="home">
+              <a href="/" key="Movimientos" className={classes.linkText}>
+                {" "}
+                <Home fontSize="large" />
+              </a>
+            </IconButton>
 
-        <div>
-            <Link to="/">
-                <button type="button">
-                    Home
-     </button>
-            </Link>
-
-            {logged ? (
+            <List
+              component="nav"
+              aria-labelledby="main navigation"
+              className={classes.navDisplayFlex}
+            >
+              {logged ? (
                 <>
+                  <a
+                    href="/Movements"
+                    key="Movimientos"
+                    className={classes.linkText}
+                  >
+                    <ListItem button>
+                      <ListItemText primary="Movimientos" />
+                    </ListItem>
+                  </a>
 
-                    <Link to="/Movements">
-                        <button type="button">
-                            Ver todos los movimientos
-             </button>
-                    </Link>
-                    <Link to="/NewMovement">
-                        <button type="button">
-                            Crear nuevo movimiento
-             </button>
-                    </Link>
-                    <button type="button" onClick={logout}>Logout</button>
+                  <a
+                    href="/NewMovement"
+                    key="Crear movimiento"
+                    className={classes.linkText}
+                  >
+                    <ListItem button>
+                      <ListItemText primary="Crear movimiento" />
+                    </ListItem>
+                  </a>
+                  <ListItem
+                    button
+                    onClick={logout}
+                    className={classes.linkText}
+                  >
+                    <ListItemText primary="LogOut" />
+                  </ListItem>
                 </>
-
-            )
-                : (
-                    <>
-
-
-                        <Link to="/register">
-                            <button type="button">Registrarse</button>
-                        </Link>
-                        <Link to="/login">
-                            <button type="button">
-                                Login
- </button>
-                        </Link>
-                    </>
-                )}
-
-
-        </div>
-
-    );
+              ) : (
+                <>
+                  <a
+                    href="/register"
+                    key="Registrarse"
+                    className={classes.linkText}
+                  >
+                    <ListItem button>
+                      <ListItemText primary="Registrarse" />
+                    </ListItem>
+                  </a>
+                  <a href="/login" key="Login" className={classes.linkText}>
+                    <ListItem button>
+                      <ListItemText primary="Login" />
+                    </ListItem>
+                  </a>
+                </>
+              )}
+            </List>
+          </Container>
+        </Toolbar>
+      </AppBar>
+    </>
+  );
 };
 
-export default Home;
+export default NavBar;
