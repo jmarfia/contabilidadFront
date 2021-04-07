@@ -1,9 +1,10 @@
 import HomePage from "./components/Home";
 import NavBar from "./components/NavBar";
-import Login from "./components/Login";
+import LoginComponent from "./components/Login";
 import Movements from "./components/Movements";
 import NewMovement from "./components/NewMovement";
 import RegisterForm from "./components/RegisterForm";
+import Container from '@material-ui/core/Container';
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -11,6 +12,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 const App = () => (
   <Router>
     <NavBar />
+    <Container maxWidth="lg">
     <Switch>
       <Route exact path="/">
         <HomePage />
@@ -25,10 +27,11 @@ const App = () => (
         <RegisterForm />
       </Route>
       <Route path="/login">
-        <Login />
+        <LoginComponent />
       </Route>
 
     </Switch>
+    </Container>
   </Router>
 );
 

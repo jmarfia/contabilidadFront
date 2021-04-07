@@ -7,37 +7,61 @@ import {
   TableRow,
   TableCell,
   TableContainer,
+  Table,
+  TableHead,
+  Button,
+  TablePagination,
+  TableSortLabel,
+  Toolbar,
 } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Notification from "./Notification";
-import useTable from "./useTable";
+import Report from "./Report";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
     padding: theme.spacing(3),
   },
+  table: {
+    marginTop: theme.spacing(3),
+    "& thead th": {
+      fontWeight: "600",
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.light,
+    },
+    "& tbody td": {
+      fontWeight: "300",
+    },
+    "& tbody tr:hover": {
+      backgroundColor: "#FFFbf2",
+      cursor: "pointer",
+    },
+  },
 }));
 
-const headCells=[
-    {id:"Movement", label:"Where the money goes"},
-    {id:"Amount", label:"How much money"},
-    {id: "Delete", label:"Delete"}
-]
+const headCells = [
+  { id: "createdAt", label: "Date" },
+  { id: "name", label: "Where the money goes" },
+  { id: "amount", label: "How much money" },
+  { id: "delete", label: "Delete" },
+];
 
 const Movements = () => {
   const [movements, setMovements] = useState([]);
-  const [error, setError] = useState("");
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
     type: "",
   });
   const classes = useStyles();
-  const { TblContainer, TblHead } = useTable(movements, headCells);
+  const pages = [5, 10, 25];
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
+  const [order, setOrder] = useState();
+  const [orderBy, setOrderBy] = useState();
 
-  function getMovements() {
+  async function getMovements() {
     let options = {
       method: "get",
       url: `http://localhost:3001/api/movements`,
@@ -46,18 +70,21 @@ const Movements = () => {
         "x-access-token": localStorage.getItem("token"),
       },
     };
-    axios(options).then((response) => {
+    try {
+      const response = await axios(options);
       if (response.data.auth === false) {
-        setError(["necesita autenticarse"]);
+        setNotify({
+          isOpen: true,
+          message: "LogIn First!",
+          type: "warning",
+        });
       } else {
-        setError("");
         setMovements((prevState) => [...response.data]);
       }
-    });
+    } catch (err) {
+      console.log(err);
+    }
   }
-  useEffect(() => {
-    getMovements();
-  }, []);
 
   async function deleteMovement(id) {
     if (window.confirm("Are you sure to delete this record?")) {
@@ -80,36 +107,115 @@ const Movements = () => {
       }
     }
   }
-
-  let myStyle = {
-    width: "18rem",
-    overflow: "hidden",
-    display: "block",
-    whiteSpace: "nowrap",
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  }
+
+  function getComparator(order, orderBy) {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
+  function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const movementsAfterPagingAndSorting = () => {
+    return stableSort(movements, getComparator(order, orderBy)).slice(
+      page * rowsPerPage,
+      (page + 1) * rowsPerPage
+    );
+  };
+  const handleSortRequest = (cellId) => {
+    const isAsc = orderBy === cellId && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(cellId);
+  };
+  function getDate(date){
+    const parsedDate =  new Date(date)
+    return parsedDate.toDateString() 
+  }
+
+  useEffect(() => {
+    getMovements();
+  }, []);
 
   return (
     <>
       <Paper className={classes.pageContent}>
-        <TblContainer>
-            <TblHead />
+        <div>
+          <Report movimientos={movements} />
+        </div>
+
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              {headCells.map((headCell) => (
+                <TableCell
+                  key={headCell.id}
+                  sortDirection={orderBy === headCell.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => {
+                      handleSortRequest(headCell.id);
+                    }}
+                  >
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
           <TableBody>
-            {movements.map((movement) => (
+            {movementsAfterPagingAndSorting().map((movement) => (
               <TableRow key={movement._id}>
+                <TableCell>{getDate(movement.createdAt)}</TableCell>
                 <TableCell>{movement.name}</TableCell>
                 <TableCell>${movement.amount}</TableCell>
                 <TableCell>
-                <Button
-          onClick={() => deleteMovement(movement._id)}
-          variant="contained"
-          color="secondary"
-          startIcon={<DeleteIcon />}
-        ></Button>
+                  <Button
+                    onClick={() => deleteMovement(movement._id)}
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<DeleteIcon />}
+                  ></Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
-        </TblContainer>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={pages}
+          component="div"
+          rowsPerPage={rowsPerPage}
+          count={movements.length}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
       </Paper>
       <Notification notify={notify} setNotify={setNotify} />
     </>

@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import "./styles.css";
 import {isLogged} from "../store/actions"
 
-const NewMovement = () => {
+const LoginComponent = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loginStatus, setLoginStatus] = useState(false);
@@ -96,4 +95,4 @@ const NewMovement = () => {
         </div>
     );
 };
-export default NewMovement;
+export default LoginComponent;

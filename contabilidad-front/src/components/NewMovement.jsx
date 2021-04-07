@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import "./styles.css";
 
 const NewMovement = () => {
   let history = useHistory();
@@ -39,10 +38,10 @@ const NewMovement = () => {
     createUser(User);
   };
   return (
-    <div className="wrapper fadeInDown">
+    <div className="wrapper">
       <h2>{error} </h2>
       <div id="formContent">
-        <div className="fadeIn first">
+        <div className="">
           <h2 className="pt-3"> Registro</h2>
         </div>
         <div>

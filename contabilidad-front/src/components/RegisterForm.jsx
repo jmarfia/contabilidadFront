@@ -2,8 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import "./styles.css";
-
+  
 const RegisterForm = (props) => {
   let history = useHistory();
   const dispatch = useDispatch();
@@ -40,9 +39,9 @@ const RegisterForm = (props) => {
     });
   };
   return (
-    <div className="wrapper fadeInDown">
+    <div className="wrapper">
       <div id="formContent">
-      <div class="fadeIn first">
+      <div >
       <h2 className="pt-3"> Registro</h2>
     </div>
         <div>

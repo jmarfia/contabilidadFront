@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
 import { actionLogout } from "../store/actions";
 import { useHistory } from "react-router-dom";
 import {
@@ -14,6 +13,7 @@ import {
   Container,
 } from "@material-ui/core";
 import { Home } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   navbarDisplayFlex: {
@@ -29,13 +29,14 @@ const useStyles = makeStyles({
     textTransform: `uppercase`,
     color: `white`,
   },
+
 });
 
 const NavBar = () => {
-  const classes = useStyles();
   const logged = useSelector((state) => state.isLogged);
   const dispatch = useDispatch();
   let history = useHistory();
+  const classes = useStyles();
 
   async function logout() {
     try {
@@ -54,7 +55,7 @@ const NavBar = () => {
         <Toolbar>
           <Container className={classes.navbarDisplayFlex}>
             <IconButton edge="start" color="inherit" aria-label="home">
-              <a href="/" key="Movimientos" className={classes.linkText}>
+              <a href="/" key="Home" className={classes.linkText}>
                 {" "}
                 <Home fontSize="large" />
               </a>
@@ -73,7 +74,7 @@ const NavBar = () => {
                     className={classes.linkText}
                   >
                     <ListItem button>
-                      <ListItemText primary="Movimientos" />
+                      <ListItemText primary="Ver" />
                     </ListItem>
                   </a>
 
@@ -83,7 +84,7 @@ const NavBar = () => {
                     className={classes.linkText}
                   >
                     <ListItem button>
-                      <ListItemText primary="Crear movimiento" />
+                      <ListItemText primary="Crear" />
                     </ListItem>
                   </a>
                   <ListItem
