@@ -164,11 +164,10 @@ const Movements = () => {
   return (
     <>
       <Paper className={classes.pageContent}>
-        <div>
-          <Report movimientos={movements} />
-        </div>
-
-        <Table className={classes.table}>
+          <Report movimientos={stableSort(movements, getComparator("asc", "createdAt"))} />
+        </Paper>
+        <Paper className={classes.pageContent}>
+        <Table className={classes.table} size="small">
           <TableHead>
             <TableRow>
               {headCells.map((headCell) => (
