@@ -10,6 +10,7 @@ const LoginComponent = () => {
   const [loginStatus, setLoginStatus] = useState(false);
   const dispatch = useDispatch();
   let history = useHistory();
+  const baseURL = process.env.REACT_APP_BASE_URL
 
   const login = () => {
     function getUserInfo() {
@@ -23,7 +24,7 @@ const LoginComponent = () => {
     async function sendCredentials(credentials) {
       let options = {
         method: "post",
-        url: `http://localhost:3001/api/login`,
+        url: `${baseURL}/api/login`,
         crossdomain: true,
         data: User,
       };
@@ -37,7 +38,7 @@ const LoginComponent = () => {
         history.push("/");
       } catch (err) {
         setLoginStatus(false);
-        console.log(err, "ERROR DE LOGIN");
+        console.log(err, "ERROR DE LOGIN", `${baseURL}/api/login`);
       }
     }
     sendCredentials(User);

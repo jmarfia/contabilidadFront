@@ -6,6 +6,8 @@ import { useHistory } from "react-router-dom";
 const RegisterForm = (props) => {
   let history = useHistory();
   const dispatch = useDispatch();
+  const baseURL = process.env.REACT_APP_BASE_URL
+
   const handleSubmit = (e) => {
     e.preventDefault();
     function getUserInfo() {
@@ -24,7 +26,7 @@ const RegisterForm = (props) => {
 
     let options3 = {
       method: "post",
-      url: `http://localhost:3001/api/register`,
+      url: `${baseURL}/api/register`,
       crossdomain: true,
       data: User,
     };

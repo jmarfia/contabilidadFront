@@ -60,11 +60,13 @@ const Movements = () => {
   const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
   const [order, setOrder] = useState();
   const [orderBy, setOrderBy] = useState();
+  const baseURL = process.env.REACT_APP_BASE_URL
+
 
   async function getMovements() {
     let options = {
       method: "get",
-      url: `http://localhost:3001/api/movements`,
+      url: `${baseURL}/api/movements`,
       crossdomain: true,
       headers: {
         "x-access-token": localStorage.getItem("token"),
@@ -90,7 +92,7 @@ const Movements = () => {
     if (window.confirm("Are you sure to delete this record?")) {
       let options = {
         method: "delete",
-        url: `http://localhost:3001/api/deletemovement/${id}`,
+        url: `${baseURL}/api/deletemovement/${id}`,
         crossdomain: true,
       };
       try {

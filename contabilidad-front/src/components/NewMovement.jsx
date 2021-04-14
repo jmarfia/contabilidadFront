@@ -5,11 +5,13 @@ import { useHistory } from "react-router-dom";
 const NewMovement = () => {
   let history = useHistory();
   const [error, setError] = useState("");
+  const baseURL = process.env.REACT_APP_BASE_URL
+
 
   async function createUser(User) {
     let options = {
       method: "post",
-      url: `http://localhost:3001/api/newmovement`,
+      url: `${baseURL}/api/newmovement`,
       crossdomain: true,
       data: User,
       headers: {
