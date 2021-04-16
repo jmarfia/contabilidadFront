@@ -18,8 +18,8 @@ function createData(time, amount) {
 }
 
 const Report = (props) => {
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
+  const [month, setMonth] = useState("All");
+  const [year, setYear] = useState("All");
   const movements = props.movimientos;
   let suma = 0;
 
